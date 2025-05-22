@@ -1,0 +1,26 @@
+-= WORD Szukanie =-
+-(znaki specjalne)-
+===================
+
+znak akapitu .................. ^p
+znak tabulacji ................ ^t
+dowolny znak .................. ^?
+dowolna cyfra ................. ^#
+dowolna litera ................ ^$
+znak daszka ................... ^^
+znak sekcji ................... ^%
+znak akapitu .................. ^v
+podział kolumny ............... ^n
+pauza ......................... ^+
+półpauza ...................... ^=
+znacznik przypisu końcowego ... ^e
+pole .......................... ^d
+znacznik przypisu dolnego ..... ^f
+grafika ....................... ^g
+ręczny podział wiersza ........ ^l
+ręczny podział strony ......... ^m
+łącznik nierozdzielający ...... ^~
+spacja nierozdzielająca ....... ^s
+łącznik opcjonalny ............ ^-
+podział sekcji ................ ^b
+biały znak .................... ^w
