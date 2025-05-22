@@ -9,8 +9,10 @@ Apps (files):
 
 - Euro-Sredni-NBP.html / _shows mid EUR-PLN value by NBP_
 - Znaki-Specjalne.html / _shows special characters inserted as plain text (with code or for copying via clipboard)_
+- Word-szukanie-znaki-specjalne.txt / _shows special characters to find in Word "Find/Replace"_
 
 Stack:
 
 - JS
 - HTML+CSS
+- txt / MarkDown
