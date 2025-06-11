@@ -7,9 +7,9 @@ One app - one file (generaly). Sometimes more - in separate folder.
 
 Apps (files):
 
-- Euro-Sredni-NBP.html / _shows mid EUR-PLN value by NBP_
-- Znaki-Specjalne.html / _shows special characters inserted as plain text (with code or for copying via clipboard)_
-- Word-szukanie-znaki-specjalne.txt / _shows special characters to find in Word "Find/Replace"_
+- Euro-Sredni-NBP.html / _shows the current MID value of the EUR-PLN given by NBP_
+- Znaki-Specjalne.html / _shows special characters to insert as plain text (with code or for copy to clipboard)_
+- Word-szukanie-znaki-specjalne.txt / _shows special characters for finding in Word using "Find/Replace"_
 
 Stack:
 
