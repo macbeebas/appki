@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PL > no PL</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 1rem;
+      font-size: 1rem;
+      resize: vertical;
+      margin-bottom: 1rem;
+    }
+
+    button {
+      padding: 0.6rem 1.2rem;
+      font-size: 1rem;
+      margin-right: 0.5rem;
+      cursor: pointer;
+    }
+
+    #output {
+      white-space: pre-wrap;
+      background-color: #f0f0f0;
+      padding: 1rem;
+      margin-top: 1rem;
+      border: 1px solid #ccc;
+      min-height: 100px;
+    }
+
+    #copyMessage {
+      color: green;
+      margin-top: 0.5rem;
+      font-weight: bold;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        font-size: 1.1rem;
+      }
+
+      textarea {
+        font-size: 1.1rem;
+      }
+
+      button {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Konwerter tekstu z PL na No-PL</h1>
+  <textarea id="inputText" placeholder="Wklej tekst z polskimi znakami..."></textarea>
+  <br />
+  <button onclick="convertText()">Konwertuj</button>
+  <button onclick="copyToClipboard()">Kopiuj wynik</button>
+  <div id="output"></div>
+  <div id="copyMessage"></div>
+
+  <script>
+    const polishMap = {
+      'ą': 'a', 'ć': 'c', 'ę': 'e', 'ł': 'l', 'ń': 'n', 'ó': 'o', 'ś': 's', 'ź': 'z', 'ż': 'z',
+      'Ą': 'A', 'Ć': 'C', 'Ę': 'E', 'Ł': 'L', 'Ń': 'N', 'Ó': 'O', 'Ś': 'S', 'Ź': 'Z', 'Ż': 'Z'
+    };
+
+    function convertText() {
+      const input = document.getElementById('inputText').value;
+      const converted = input.split('').map(char => polishMap[char] || char).join('');
+      document.getElementById('output').textContent = converted;
+      document.getElementById('copyMessage').textContent = '';
+    }
+
+    function copyToClipboard() {
+      const outputText = document.getElementById('output').textContent;
+      if (!outputText) return;
+
+      navigator.clipboard.writeText(outputText).then(() => {
+        document.getElementById('copyMessage').textContent = 'Skopiowano do schowka!';
+      }).catch(err => {
+        document.getElementById('copyMessage').textContent = 'Błąd kopiowania.';
+      });
+    }
+  </script>
+</body>
+</html>
