@@ -12,6 +12,7 @@ Apps (files):
 - Word-szukanie-znaki-specjalne.txt / _shows special characters for finding in Word using "Find/Replace"_
 - No-PL.html / _converts Polish characters to Latin characters in the given text_
 - No-slash.html / _converts slash/backslash to "-" in the given text_
+- NIP-API.html / _create link to https://wl-api.mf.gov.pl with NIP and DATE_
 
 Stack:
 
