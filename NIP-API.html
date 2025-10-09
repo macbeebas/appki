@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Sprawdź NIP</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      padding: 40px;
+    }
+    form {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 400px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 15px;
+      background-color: #0078D7;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #005fa3;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 16px;
+    }
+    a {
+      color: #0078D7;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <form id="nipForm">
+    <label for="nip">Numer NIP:</label>
+    <input type="text" id="nip" name="nip" maxlength="10" required>
+
+    <label for="date">Data (RRRR-MM-DD):</label>
+    <input type="date" id="date" name="date" required>
+
+    <button type="submit">Generuj link</button>
+  </form>
+
+  <div id="result"></div>
+
+  <script>
+    // Ustawienie domyślnej daty
+    document.addEventListener("DOMContentLoaded", () => {
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById("date").value = today;
+    });
+
+    document.getElementById("nipForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const nip = document.getElementById("nip").value.trim();
+      const date = document.getElementById("date").value;
+
+      // Walidacja NIP: tylko cyfry i dokładnie 10 znaków
+      const nipRegex = /^\d{10}$/;
+      if (!nipRegex.test(nip)) {
+        alert("NIP musi składać się dokładnie z 10 cyfr.");
+        return;
+      }
+
+      // Walidacja daty (format RRRR-MM-DD)
+      const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+      if (!dateRegex.test(date)) {
+        alert("Data musi być w formacie RRRR-MM-DD.");
+        return;
+      }
+
+      const url = `https://wl-api.mf.gov.pl/api/search/nip/${nip}?date=${date}`;
+      const displayText = `https://wl-api.mf.gov.pl/api/search/nip/NIP?date=DATA`
+        .replace("NIP", nip)
+        .replace("DATA", date);
+
+      document.getElementById("result").innerHTML = `
+        <p>Wygenerowany link:</p>
+        <a href="${url}" target="_blank">${url}</a>`;
+    });
+  </script>
+
+</body>
+</html>
