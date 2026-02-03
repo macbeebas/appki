@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitor Temperatury</title>
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --danger-color: #dc3545;
+            --bg-color: #f4f7f6;
+            --text-color: #333;
+            --error-color: #ff9800;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .temp-display {
+            font-size: 4rem;
+            font-weight: bold;
+            margin: 1rem 0;
+            color: var(--primary-color);
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        select, button {
+            padding: 12px;
+            font-size: 1rem;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+        }
+
+        button {
+            border: none;
+            color: white;
+            font-weight: bold;
+            background-color: var(--primary-color);
+        }
+
+        button.stop { background-color: var(--danger-color); }
+        
+        .hidden { display: none; }
+        
+        .status { font-size: 0.85rem; color: #666; margin-top: 10px; min-height: 1.2em; }
+        .error-msg { color: var(--error-color); font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div id="setup-view">
+            <h2>Ustawienia Monitoringu</h2>
+            <div class="controls">
+                <label for="interval">Częstotliwość odświeżania:</label>
+                <select id="interval">
+                    <option value="900000">Co 15 minut</option>
+                    <option value="3600000">Co godzinę</option>
+                    <option value="10800000">Co 3 godziny</option>
+                    <option value="43200000">Co 12 godzin</option>
+                    <option value="86400000">Co 24 godziny</option>
+                </select>
+                <button onclick="startMonitoring()">START</button>
+            </div>
+        </div>
+
+        <div id="monitor-view" class="hidden">
+            <h2>Aktualna Temperatura</h2>
+            <div id="temp-value" class="temp-display">--°C</div>
+            <div id="status-bar" class="status">Inicjalizacja...</div>
+            <br>
+            <button class="stop" onclick="stopMonitoring()">STOP</button>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'https://danepubliczne.imgw.pl/api/data/synop/station/warszawa';
+        let timer = null;
+        let lastValidTemp = null; // Przechowywanie ostatniej poprawnej wartości
+
+        const setupView = document.getElementById('setup-view');
+        const monitorView = document.getElementById('monitor-view');
+        const tempDisplay = document.getElementById('temp-value');
+        const statusBar = document.getElementById('status-bar');
+
+        async function fetchTemperature() {
+            try {
+                // Wykorzystanie [Fetch API](https://developer.mozilla.org)
+                const response = await fetch(API_URL);
+                
+                if (!response.ok) throw new Error("Błąd połączenia");
+                
+                const data = await response.json();
+                
+                if (data && typeof data.temperatura !== 'undefined') {
+                    lastValidTemp = data.temperatura;
+                    tempDisplay.innerText = `${lastValidTemp}°C`;
+                    statusBar.innerHTML = `Ostatnia aktualizacja: ${new Date().toLocaleTimeString()}`;
+                } else {
+                    throw new Error("Błędny format danych");
+                }
+            } catch (error) {
+                console.error("API Error:", error);
+                
+                // Obsługa błędu: zachowanie ostatniej wartości
+                if (lastValidTemp !== null) {
+                    tempDisplay.innerText = `${lastValidTemp}°C`;
+                    statusBar.innerHTML = `<span class="error-msg">⚠️ Błąd API. Wyświetlam ostatni odczyt.</span>`;
+                } else {
+                    tempDisplay.innerText = "--°C";
+                    statusBar.innerHTML = `<span class="error-msg">Błąd: Nie można pobrać danych.</span>`;
+                }
+            }
+        }
+
+        function startMonitoring() {
+            const intervalTime = parseInt(document.getElementById('interval').value);
+            setupView.classList.add('hidden');
+            monitorView.classList.remove('hidden');
+            
+            fetchTemperature();
+            timer = setInterval(fetchTemperature, intervalTime);
+        }
+
+        function stopMonitoring() {
+            if (timer) clearInterval(timer);
+            // Zgodnie z instrukcją: przeładowanie strony startowej
+            window.location.reload();
+        }
+    </script>
+</body>
+</html>
