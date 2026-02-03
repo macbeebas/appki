@@ -14,6 +14,7 @@ Apps (files):
 - No-slash.html / _converts slash/backslash to "-" in the given text_
 - NIP-API.html / _create link to https://wl-api.mf.gov.pl with NIP and DATE_
 - mvi-timer.html / _shows current weekday, date and time - full responsive_
+- Termometr.html / _shows current themperature - full responsive_
 
 Stack:
 
